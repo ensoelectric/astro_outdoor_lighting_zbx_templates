@@ -1,0 +1,48 @@
+zabbix_export:
+  version: '5.2'
+  date: '2021-03-22T14:53:35Z'
+  groups:
+    -
+      name: Astro
+  templates:
+    -
+      template: astro_outdoor_lighting
+      name: astro_outdoor_lighting
+      description: 'Включение наружного освещения в зависимости от положения Солнца'
+      groups:
+        -
+          name: Astro
+      items:
+        -
+          name: elevation
+          type: EXTERNAL
+          key: 'get_sun_elevation.pl[{$LAT}, {$LON}, {$ELEV}]'
+          history: 365d
+          trends: '0'
+          value_type: FLOAT
+          units: °
+          description: 'Высота Солнца над горизонтом'
+          triggers:
+            -
+              expression: '{last()}<={$CIVIL_DEGREES}'
+              name: civil_twilight_dawn
+              priority: INFO
+              description: 'Гражданские сумерки завершились, начались навигационные. Включение фасадного освещения.'
+              manual_close: 'YES'
+      macros:
+        -
+          macro: '{$CIVIL_DEGREES}'
+          value: '-1.5'
+          description: 'Окончание и начало гражданских сумерек в градусах. Включение и отключение наружного освещения.'
+        -
+          macro: '{$ELEV}'
+          value: '127'
+          description: 'Высота над уровнем моря в метрах'
+        -
+          macro: '{$LAT}'
+          value: '55.7558'
+          description: 'Широта в градусах'
+        -
+          macro: '{$LON}'
+          value: '37.6173'
+          description: 'Долгота в градусах'
