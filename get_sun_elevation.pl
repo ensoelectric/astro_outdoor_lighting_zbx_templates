@@ -5,9 +5,7 @@
 # 37.6173 - долгота в градусах
 # 127 - высота над уровнем моря в метрах
 
-use Astro::Coord::ECI;
 use Astro::Coord::ECI::Sun;
-use Astro::Coord::ECI::TLE;
 use Astro::Coord::ECI::Utils qw{:all};
 
 my ($lat, $lon, $elev) = (deg2rad($ARGV[0]), deg2rad($ARGV[1]), $ARGV[2]/1000);
